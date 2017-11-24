@@ -35,7 +35,7 @@ public class Solver {
         List<String> words = new ArrayList<>();
         while(!queue.isEmpty()) {
             Tuple tuple = queue.poll();
-            List<Matrix.Cell> neighbors = getNeighbors(tuple.cell, matrix);
+            List<Matrix.Cell> neighbors = matrix.getNeighbors(tuple.cell);
             for (Matrix.Cell neighbor : neighbors) {
                 if (! neighbor.visited) {
                     String word = tuple.prefix + matrix.getCell(neighbor.x, neighbor.y).ch;
@@ -53,32 +53,5 @@ public class Solver {
             }
         }
         return words;
-    }
-
-    private List<Matrix.Cell> getNeighbors(Matrix.Cell cell, Matrix matrix) {
-        /*
-        (-1, -1)   (-1, 0)     (-1, 1)
-        (0, -1)     currCell   (0, 1)
-        (1, -1)    (1, 0)      (1, 1)
-         */
-        int rows = matrix.getRowSize();
-        int cols = matrix.getColSize();
-        int[][] moves = 
-                        {
-                           {-1, -1}, {-1, 0}, {-1, 1},
-                           {0, -1},           {0, 1},
-                           {1, -1}, {1, 0}, {1, 1},
-                        };
-        
-        List<Matrix.Cell> neighbors = new ArrayList<>();
-        for (int[] move : moves) {
-            int x = cell.x + move[0];
-            int y = cell.y + move[1];
-            boolean isValidCell = (x >= 0 && x < rows) && (y >= 0 && y < cols);
-            if (isValidCell) {
-                neighbors.add(matrix.getCell(x, y));
-            }
-        }
-        return neighbors;
     }
 }

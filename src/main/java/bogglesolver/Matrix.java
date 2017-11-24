@@ -1,5 +1,8 @@
 package bogglesolver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Matrix {
     
     private Cell[][] matrix;
@@ -29,6 +32,33 @@ public class Matrix {
 
         //used for debugging only
         print(false);
+    }
+
+    public List<Matrix.Cell> getNeighbors(Cell cell) {
+        /*
+        (-1, -1)   (-1, 0)     (-1, 1)
+        (0, -1)     currCell   (0, 1)
+        (1, -1)    (1, 0)      (1, 1)
+         */
+        int rows = this.getRowSize();
+        int cols = this.getColSize();
+        int[][] moves = 
+                        {
+                           {-1, -1}, {-1, 0}, {-1, 1},
+                           {0, -1},           {0, 1},
+                           {1, -1}, {1, 0}, {1, 1},
+                        };
+        
+        List<Matrix.Cell> neighbors = new ArrayList<>();
+        for (int[] move : moves) {
+            int x = cell.x + move[0];
+            int y = cell.y + move[1];
+            boolean isValidCell = (x >= 0 && x < rows) && (y >= 0 && y < cols);
+            if (isValidCell) {
+                neighbors.add(this.getCell(x, y));
+            }
+        }
+        return neighbors;
     }
     
     public Cell getCell(int x, int y) {
